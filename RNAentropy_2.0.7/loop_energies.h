@@ -52,7 +52,7 @@
  *  \return   The energy contribution of the introduced multiloop stem
  */
 //#define E_MLstem(A,B,C,D)     E_Stem((A),(B),(C),0,(D))
-INLINE  PRIVATE int E_MLstem( int type,
+INLINE  PUBLIC int E_MLstem( int type,
                               int si1,
                               int sj1,
                               paramT *P);
@@ -448,7 +448,7 @@ INLINE  PRIVATE int E_ExtLoop(int type, int si1, int sj1, paramT *P){
   return energy;
 }
 
-INLINE  PRIVATE int E_MLstem(int type, int si1, int sj1, paramT *P){
+INLINE  PUBLIC int E_MLstem(int type, int si1, int sj1, paramT *P){
   int energy = 0;
   if(si1 >= 0 && sj1 >= 0){
     energy += P->mismatchM[type][si1][sj1];

@@ -54,7 +54,13 @@ double AU_Penalty(int i, int j, short *S0){
 	if (energy_is_zero) return 0;
 
 	type=pair[S0[i]][S0[j]];
-	energy_int=P->MLintern[type]-P->MLintern[1]; /* 0 or AU penalty */
+//	energy_int=P->MLintern[type]-P->MLintern[1]; /* 0 or AU penalty */
+	if(type>2){
+		energy_int= P->TerminalAU;
+	}
+	else{
+		energy_int= 0;
+	}
 //	printf("ML_AU %d %d = %d\n",i,j,energy_int);
 	return (double) energy_int/100.;
 }
@@ -67,7 +73,8 @@ double MLbasepairAndAUpenalty(int i, int j, short *S0){
 	if (energy_is_zero) return 0;
 
 	type=pair[S0[i]][S0[j]];
-	energy_int=P->MLintern[type]; 
+	energy_int=E_MLstem(type, -1, -1, P);
+	//energy_int=P->MLintern[type]; 
 //	printf("ML_IN %d %d = %d\n",i,j,energy_int);
 	return (double) energy_int/100.;
 }
