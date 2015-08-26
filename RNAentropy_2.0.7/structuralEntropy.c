@@ -42,7 +42,7 @@
 typedef long double DBL_TYPE;
 
 void usage(char* name){
-   printf ("\nUsage: %s \"sequence\" -s sequence -t temperature -d delta_Temp (compute structural entropy using <E> = RT² * d/dT ln(Z(T)) ) -z energy_is_zero [0|1] (default 0) -v (verbose, extended output)\n       %s -h (detailed help)  \n",name,name);
+   printf ("\nUsage: %s \"sequence\" -s sequence -t temperature -d delta_Temp (compute structural entropy using <E> = RT² * d/dT ln(Z(T)) ) -z energy_is_zero [0|1] (default 0) -c (centered) -v (verbose, extended output)\n       %s -h (detailed help)  \n",name,name);
    printf ("Output:\n  - H     : Structural entropy\n  - <E>   : Expected energy\n  - Length: Sequence length\n  - G     : Ensemble free energy (-RT*ln(Z))\n");
    exit(1);
 }
@@ -54,6 +54,7 @@ int main(int argc, char *argv[]){
 //	int mode = MODE_TURNER;
 	int i;
 	int verbose=0;
+	int centered=0;
 	double inputTemp = DEFAULT_TEMP;
 	fTemp = DEFAULT_TEMP;
 	double delta_T=0.0;
@@ -84,6 +85,7 @@ int main(int argc, char *argv[]){
 		       "   -t <temperature>   : Temperature in ºC\n"
 		       "   -d <delta_T>       : Temperature variation used for estimating d/dT ln(Z(T))\n"
 		       "                        NOTE: If this parameter is provided, H is computed estimating <E> = RT² * d/dT ln(Z(T))\n"
+		       "   -c                 : (Use only in combination of -d) Use the centered version for estimating <E> = RT² * d/dT ln(Z(T)) \n"
 		       "   -v                 : Output includes method for computing H and the name of the ouput parameters\n"
 		       "   -z <energy_is_zero>: [0|1] If value is 1, energies are set to 0, ouput is structural entropy for the uniform case \n"
 		       "   -h                 : Print this message \n\n"
@@ -168,6 +170,9 @@ int main(int argc, char *argv[]){
 							usage(argv[0]);
 						}
 						break;
+					case 'c':
+						centered=1;
+						break;
 					case 'v':
 						verbose=1;
 						break;
@@ -175,6 +180,7 @@ int main(int argc, char *argv[]){
 			}
 		}
 	} 
+
 	// Parameter validation
 	if (strlen(sequence)==0){ 
 		printf("No input sequence!\n");
@@ -199,7 +205,6 @@ int main(int argc, char *argv[]){
 		exit(1);
 	}
 
-
 	// Convert sequence to uppercase
 	for(i=1;i<strlen(sequence);i++){
 		sequence[i]=toupper(sequence[i]);
@@ -208,7 +213,7 @@ int main(int argc, char *argv[]){
 	temperature=inputTemp;
 	if(delta_T!=0){ // If delta T given compute structural entropy using <E> = RT² * d/dT ln(Z(T))
 		fTemp = inputTemp+delta_T;
-		return structuralEntropyUncoupledFTemp(sequence,verbose);
+		return structuralEntropyUncoupledFTemp(sequence,verbose, centered);
 	}
 	else{
 		return structuralEntropyTurner(sequence,verbose);
@@ -330,10 +335,9 @@ int structuralEntropyTurner(char* sequence, int verbose){
 	}
 	printf("%lf\t%lf\t%d\t%lf\n",entropy, expectedEnergy,seqlen,eEnsemble);
 	return 0;
-
 }
 
-int structuralEntropyUncoupledFTemp(char* sequence, int verbose){
+int structuralEntropyUncoupledFTemp(char* sequence, int verbose, int centered){
 	int i,j;
 	// double totalpar; //total partition function
 	// double totalNumStr; //total number of structures
@@ -370,7 +374,7 @@ int structuralEntropyUncoupledFTemp(char* sequence, int verbose){
 	ZB  = Allocate2DMatrix( seqlen+1,seqlen+1);
 	ZM1 = Allocate2DMatrix( seqlen+1,seqlen+1);
 	ZM  = Allocate2DMatrix( seqlen+1,seqlen+1);
-	for(i=0;i<=seqlen;i++){ //necessary since Yang didn't use calloc
+	for(i=0;i<=seqlen;i++){ 
 		for (j=0;j<=seqlen;j++) {
 			if(j-i<4){
 				ZB[i][j]=0; Z[i][j]=1; ZM1[i][j]=0; ZM[i][j]=0;
@@ -384,26 +388,59 @@ int structuralEntropyUncoupledFTemp(char* sequence, int verbose){
 	QB  = Allocate2DMatrix( seqlen+1,seqlen+1);
 	QM1 = Allocate2DMatrix( seqlen+1,seqlen+1);
 	QM  = Allocate2DMatrix( seqlen+1,seqlen+1);
-	for(i=0;i<=seqlen;i++){ //necessary since Yang didn't use calloc
+	for(i=0;i<=seqlen;i++){ 
 		for (j=0;j<=seqlen;j++) {
 			QB[i][j]=0; Q[i][j]=0; QM1[i][j]=0; QM[i][j]=0;
 		}
 	}
 
-	fkT = (temperature+K0)*GASCONST/1000.0;
+	//allocate space for V partition function using the base formal temperature
+	double **V, **VB, **VM1, **VM;
+	if(centered){
+		V   = Allocate2DMatrix( seqlen+1,seqlen+1);
+		VB  = Allocate2DMatrix( seqlen+1,seqlen+1);
+		VM1 = Allocate2DMatrix( seqlen+1,seqlen+1);
+		VM  = Allocate2DMatrix( seqlen+1,seqlen+1);
+		for(i=0;i<=seqlen;i++){ 
+			for (j=0;j<=seqlen;j++) {
+				VB[i][j]=0; V[i][j]=0; VM1[i][j]=0; VM[i][j]=0;
+			}
+		}
+	}
+
+	double lowfTemp;
+	if(centered){
+		lowfTemp = temperature-(fTemp-temperature);
+	}
+	else{
+		lowfTemp = temperature;
+	}
+
+	fkT = (lowfTemp+K0)*GASCONST/1000.0;
 	//compute partition function 
 	mcCaskill(sequence, Z, ZB, ZM1, ZM);
 
 	fkT = (fTemp+K0)*GASCONST/1000.0;
 	mcCaskill(sequence,Q,QB,QM1,QM);
 
+	if(centered){
+		fkT = (temperature+K0)*GASCONST/1000.0;
+		mcCaskill(sequence,V,VB,VM1,VM);
+	}
 
-	expectedEnergy = (GASCONST/1000.0)*(pow(temperature+K0,2))*((log(Q[1][seqlen])-log(Z[1][seqlen]))/(fTemp-temperature));
-
-	expectedEnergyNorm = expectedEnergy/seqlen;
-	entropy=(expectedEnergy/kT)+log(Z[1][seqlen]);
 	double eEnsemble;
-	eEnsemble=-kT*log(Z[1][seqlen]);
+	
+	expectedEnergy = (GASCONST/1000.0)*(pow(temperature+K0,2))*((log(Q[1][seqlen])-log(Z[1][seqlen]))/(fTemp-lowfTemp));
+	//expectedEnergyNorm = expectedEnergy/seqlen;
+
+	if(centered){
+		entropy=(expectedEnergy/kT)+log(V[1][seqlen]);
+		eEnsemble=-kT*log(V[1][seqlen]);
+	}
+	else{
+		entropy=(expectedEnergy/kT)+log(Z[1][seqlen]);
+		eEnsemble=-kT*log(Z[1][seqlen]);
+	}
 
 	if(verbose){
 		printf("Computing expected energy by <E> = RT² * d/dT ln(Z(S,%fºC)) with delta_T=%e\n",temperature,(fTemp-temperature));		
@@ -411,7 +448,6 @@ int structuralEntropyUncoupledFTemp(char* sequence, int verbose){
 	}
 	printf("%lf\t%lf\t%d\t%lf\n",entropy, expectedEnergy,seqlen,eEnsemble);
 	return 0;
-
 }
 
 /* NUSSINOV AND UNIFORM NOT IMPLEMENTED 

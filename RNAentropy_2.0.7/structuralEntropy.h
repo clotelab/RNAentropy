@@ -16,7 +16,7 @@ typedef struct PartitionFunction {
 
 PRIVATE short *encode_seq(const char *seq);
 int structuralEntropyTurner(char* sequence, int verbose);
-int structuralEntropyUncoupledFTemp(char* sequence, int verbose);
+int structuralEntropyUncoupledFTemp(char* sequence, int verbose, int centered);
 /* NUSSINOV AND UNIFORM NOT IMPLEMENTED 
 int structuralEntropyUniform(char* sequence, int verbose);
 int  structuralEntropyNussinov(char* sequence, int verbose);
