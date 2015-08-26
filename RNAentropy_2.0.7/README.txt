@@ -28,7 +28,7 @@ Program computes structural entropy (H) for a given sequence S in 2 ways:
       <E>  =  RT² * ((ln(Q(S))-ln(Z(S)))/delta_T)
   Structural entropy H(s)=<E>/RT + ln(Z(S))
 
-Usage: ./RNAentropy "sequence" -s sequence -t temperature -d delta_Temp (compute structural entropy using <E> = RT² * d/dT ln(Z(T)) ) -z energy_is_zero [0|1] (default 0) -v (verbose, extended output)
+Usage: ./RNAentropy "sequence" -s sequence -t temperature -d delta_Temp (compute structural entropy using <E> = RT² * d/dT ln(Z(T)) ) -z energy_is_zero [0|1] (default 0) -c (centered) -v (verbose, extended output)
        ./RNAentropy -h (detailed help)  
 
 Input paramters are:
@@ -37,6 +37,7 @@ Input paramters are:
    -t <temperature>   : Temperature in ºC
    -d <delta_T>       : Temperature variation used for estimating d/dT ln(Z(T))
                         NOTE: If this parameter is provided, H is computed estimating <E> = RT² * d/dT ln(Z(T))
+   -c                 : (Use only in combination of -d) Use the centered version for estimating <E> = RT² * d/dT ln(Z(T)) 
    -v                 : Output includes method for computing H and the name of the ouput parameters
    -z <energy_is_zero>: [0|1] If value is 1, energies are set to 0, ouput is structural entropy for the uniform case 
    -h                 : Print this message 
