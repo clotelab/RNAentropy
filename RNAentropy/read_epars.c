@@ -26,11 +26,11 @@
 
 PRIVATE FILE *fp;
 
-PRIVATE void  display_array(int *p, int size, int line, FILE *fp);
-PRIVATE char  *get_array1(int *arr, int size);
+PRIVATE void  display_array(double *p, int size, int line, FILE *fp);
+PRIVATE char  *get_array1(double *arr, int size);
 PRIVATE void  ignore_comment(char *line);
 PRIVATE void  check_symmetry(void);
-PRIVATE void  update_nst(int array[NBPAIRS+1][NBPAIRS+1][5][5][5][5]);
+PRIVATE void  update_nst(double array[NBPAIRS+1][NBPAIRS+1][5][5][5][5]);
 
 /**
 *** read a 1dimensional array from file
@@ -38,40 +38,40 @@ PRIVATE void  update_nst(int array[NBPAIRS+1][NBPAIRS+1][5][5][5][5]);
 *** \param dim    the size of the array
 *** \param shift  the first position the new values will be written in
 **/
-PRIVATE void  rd_1dim(int *array, int dim, int shift);
-PRIVATE void  rd_1dim_slice(int *array, int dim, int shift, int post);
-PRIVATE void  rd_2dim(int *array,
+PRIVATE void  rd_1dim(double *array, int dim, int shift);
+PRIVATE void  rd_1dim_slice(double *array, int dim, int shift, int post);
+PRIVATE void  rd_2dim(double *array,
                       int dim1, int dim2,
                       int shift1, int shift2);
-PRIVATE void  rd_2dim_slice(int *array,
+PRIVATE void  rd_2dim_slice(double *array,
                       int dim1, int dim2,
                       int shift1, int shift2,
                       int post1, int post2);
-PRIVATE void  rd_3dim(int *array,
+PRIVATE void  rd_3dim(double *array,
                       int dim1, int dim2, int dim3,
                       int shift1, int shift2, int shift3);
-PRIVATE void  rd_3dim_slice(int *array,
+PRIVATE void  rd_3dim_slice(double *array,
                       int dim1, int dim2, int dim3,
                       int shift1, int shift2, int shift3,
                       int post1, int post2, int post3);
-PRIVATE void  rd_4dim(int *array,
+PRIVATE void  rd_4dim(double *array,
                       int dim1, int dim2, int dim3, int dim4,
                       int shift1, int shift2, int shift3, int shift4);
-PRIVATE void  rd_4dim_slice(int *array,
+PRIVATE void  rd_4dim_slice(double *array,
                       int dim1, int dim2, int dim3, int dim4,
                       int shift1, int shift2, int shift3, int shift4,
                       int post1, int post2, int post3, int post4);
-PRIVATE void  rd_5dim(int *array,
+PRIVATE void  rd_5dim(double *array,
                       int dim1, int dim2, int dim3, int dim4, int dim5,
                       int shift1, int shift2, int shift3, int shift4, int shift5);
-PRIVATE void  rd_5dim_slice(int *array,
+PRIVATE void  rd_5dim_slice(double *array,
                       int dim1, int dim2, int dim3, int dim4, int dim5,
                       int shift1, int shift2, int shift3, int shift4, int shift5,
                       int post1, int post2, int post3, int post4, int post5);
-PRIVATE void  rd_6dim(int *array,
+PRIVATE void  rd_6dim(double *array,
                       int dim1, int dim2, int dim3, int dim4, int dim5, int dim6,
                       int shift1, int shift2, int shift3, int shift4, int shift5, int shift6);
-PRIVATE void  rd_6dim_slice(int *array,
+PRIVATE void  rd_6dim_slice(double *array,
                       int dim1, int dim2, int dim3, int dim4, int dim5, int dim6,
                       int shift1, int shift2, int shift3, int shift4, int shift5, int shift6,
                       int post1, int post2, int post3, int post4, int post5, int post6);
@@ -215,7 +215,7 @@ PUBLIC void read_parameter_file(const char fname[]){
         case D3_H:    rd_2dim(&(dangle3_dH[0][0]), NBPAIRS+1, 5, 1, 0);
                       break;
         case ML:      {
-                        int values[6];
+                        double values[6];
                         rd_1dim(&values[0], 6, 0);
                         ML_BASE37     = values[0];
                         ML_BASEdH     = values[1];
@@ -226,7 +226,7 @@ PUBLIC void read_parameter_file(const char fname[]){
                       }
                       break;
         case NIN:     {
-                        int values[3];
+                        double values[3];
                         rd_1dim(&values[0], 3, 0);
                         ninio37 = values[0];
                         niniodH = values[1];
@@ -234,7 +234,7 @@ PUBLIC void read_parameter_file(const char fname[]){
                       }
                       break;
         case MISC:    {
-                        int values[4];
+                        double values[4];
                         rd_1dim(&values[0], 4, 0);
                         DuplexInit37 = values[0];
                         DuplexInitdH = values[1];
@@ -262,18 +262,14 @@ PUBLIC void read_parameter_file(const char fname[]){
 
 /*------------------------------------------------------------*/
 
-PRIVATE void display_array(int *p, int size, int nl, FILE *fp)
+PRIVATE void display_array(double *p, int size, int nl, FILE *fp)
 {
   int i;
 
   for (i=1; i<=size; i++, p++) {
-    switch(*p)
-      {
-      case  INF: fprintf(fp,"   INF"); break;
-      case -INF: fprintf(fp,"  -INf"); break;
-      case  DEF: fprintf(fp,"   DEF"); break;
-      default:   fprintf(fp,"%6d",  *p); break;
-      }
+    if(*p == -INF){fprintf(fp,"   -INF");}
+    else if (*p == DEF){fprintf(fp,"   DEF");}
+    else if (*p != INF){fprintf(fp,"%6.0f",  *p);}
     if ((i%nl)==0) fprintf(fp,"\n");
   }
   if (size%nl) fprintf(fp,"\n");
@@ -282,9 +278,10 @@ PRIVATE void display_array(int *p, int size, int nl, FILE *fp)
 
 /*------------------------------------------------------------*/
 
-PRIVATE char *get_array1(int *arr, int size)
+PRIVATE char *get_array1(double *arr, int size)
 {
-  int    i, p, pos, pp, r, last;
+  int    i, pos, pp, r, last;
+  double p;
   char  *line, buf[16];
 
 
@@ -305,7 +302,7 @@ PRIVATE char *get_array1(int *arr, int size)
       else if (strcmp(buf,"INF") == 0) p = INF;
       else if (strcmp(buf,"NST") == 0) p = NST;
       else {
-        r=sscanf(buf,"%d", &p);
+        r=sscanf(buf,"%lf", &p);
         if (r!=1) {
           return line+pos;
           fprintf(stderr, "can't interpret `%s' in get_array1\n", buf);
@@ -321,11 +318,11 @@ PRIVATE char *get_array1(int *arr, int size)
   return NULL;
 }
 
-PRIVATE void rd_1dim(int *array, int dim, int shift){
+PRIVATE void rd_1dim(double *array, int dim, int shift){
   rd_1dim_slice(array, dim, shift, 0);
 }
 
-PRIVATE void rd_1dim_slice(int *array, int dim, int shift, int post){
+PRIVATE void rd_1dim_slice(double *array, int dim, int shift, int post){
   char *cp;
   cp   = get_array1(array+shift, dim-shift-post);
 
@@ -336,11 +333,11 @@ PRIVATE void rd_1dim_slice(int *array, int dim, int shift, int post){
   return;
 }
 
-PRIVATE void  rd_2dim(int *array, int dim1, int dim2, int shift1, int shift2){
+PRIVATE void  rd_2dim(double *array, int dim1, int dim2, int shift1, int shift2){
   rd_2dim_slice(array, dim1, dim2, shift1, shift2, 0, 0);
 }
 
-PRIVATE void  rd_2dim_slice(int *array,
+PRIVATE void  rd_2dim_slice(double *array,
                       int dim1, int dim2,
                       int shift1, int shift2,
                       int post1, int post2){
@@ -357,14 +354,14 @@ PRIVATE void  rd_2dim_slice(int *array,
   return;
 }
 
-PRIVATE void  rd_3dim(int *array, int dim1, int dim2, int dim3, int shift1, int shift2, int shift3){
+PRIVATE void  rd_3dim(double *array, int dim1, int dim2, int dim3, int shift1, int shift2, int shift3){
   rd_3dim_slice(array,
                 dim1, dim2, dim3,
                 shift1, shift2, shift3,
                 0, 0, 0);
 }
 
-PRIVATE void  rd_3dim_slice(int *array,
+PRIVATE void  rd_3dim_slice(double *array,
                             int dim1, int dim2, int dim3,
                             int shift1, int shift2, int shift3,
                             int post1, int post2, int post3){
@@ -385,7 +382,7 @@ PRIVATE void  rd_3dim_slice(int *array,
   return;
 }
 
-PRIVATE void  rd_4dim(int *array,
+PRIVATE void  rd_4dim(double *array,
                       int dim1, int dim2, int dim3, int dim4,
                       int shift1, int shift2, int shift3, int shift4){
   rd_4dim_slice(array,
@@ -394,7 +391,7 @@ PRIVATE void  rd_4dim(int *array,
                 0, 0, 0, 0);
 }
 
-PRIVATE void  rd_4dim_slice(int *array,
+PRIVATE void  rd_4dim_slice(double *array,
                       int dim1, int dim2, int dim3, int dim4,
                       int shift1, int shift2, int shift3, int shift4,
                       int post1, int post2, int post3, int post4){
@@ -415,7 +412,7 @@ PRIVATE void  rd_4dim_slice(int *array,
   return;
 }
 
-PRIVATE void  rd_5dim(int *array,
+PRIVATE void  rd_5dim(double *array,
                       int dim1, int dim2, int dim3, int dim4, int dim5,
                       int shift1, int shift2, int shift3, int shift4, int shift5){
   rd_5dim_slice(array,
@@ -424,7 +421,7 @@ PRIVATE void  rd_5dim(int *array,
                 0, 0, 0, 0, 0);
 }
 
-PRIVATE void  rd_5dim_slice(int *array,
+PRIVATE void  rd_5dim_slice(double *array,
                       int dim1, int dim2, int dim3, int dim4, int dim5,
                       int shift1, int shift2, int shift3, int shift4, int shift5,
                       int post1, int post2, int post3, int post4, int post5){
@@ -448,7 +445,7 @@ PRIVATE void  rd_5dim_slice(int *array,
 *** \param dim1   The size of the first dimension
 *** \param shift1 The pre shift for the first dimension
 **/
-PRIVATE void  rd_6dim(int *array,
+PRIVATE void  rd_6dim(double *array,
                       int dim1, int dim2, int dim3, int dim4, int dim5, int dim6,
                       int shift1, int shift2, int shift3, int shift4, int shift5, int shift6){
   rd_6dim_slice(array,
@@ -457,7 +454,7 @@ PRIVATE void  rd_6dim(int *array,
                 0, 0, 0, 0, 0, 0);
 }
 
-PRIVATE void  rd_6dim_slice(int *array,
+PRIVATE void  rd_6dim_slice(double *array,
                       int dim1, int dim2, int dim3, int dim4, int dim5, int dim6,
                       int shift1, int shift2, int shift3, int shift4, int shift5, int shift6,
                       int post1, int post2, int post3, int post4, int post5, int post6){
@@ -487,12 +484,12 @@ PRIVATE void  rd_Tetraloop37(void)
   i=0;
   /* erase old tetraloop entries */
   memset(&Tetraloops, 0, 281);
-  memset(&Tetraloop37, 0, sizeof(int)*40);
-  memset(&TetraloopdH, 0, sizeof(int)*40);
+  memset(&Tetraloop37, 0, sizeof(double)*40);
+  memset(&TetraloopdH, 0, sizeof(double)*40);
   do {
     buf = get_line(fp);
     if (buf==NULL) break;
-    r = sscanf(buf,"%6s %d %d", &Tetraloops[7*i], &Tetraloop37[i], &TetraloopdH[i]);
+    r = sscanf(buf,"%6s %lf %lf", &Tetraloops[7*i], &Tetraloop37[i], &TetraloopdH[i]);
     strcat(Tetraloops, " ");
     free(buf);
     i++;
@@ -509,12 +506,12 @@ PRIVATE void  rd_Hexaloop37(void)
   i=0;
   /* erase old hexaloop entries */
   memset(&Hexaloops, 0, 361);
-  memset(&Hexaloop37, 0, sizeof(int)*40);
-  memset(&HexaloopdH, 0, sizeof(int)*40);
+  memset(&Hexaloop37, 0, sizeof(double)*40);
+  memset(&HexaloopdH, 0, sizeof(double)*40);
   do {
     buf = get_line(fp);
     if (buf==NULL) break;
-    r = sscanf(buf,"%8s %d %d", &Hexaloops[9*i], &Hexaloop37[i], &HexaloopdH[i]);
+    r = sscanf(buf,"%8s %lf %lf", &Hexaloops[9*i], &Hexaloop37[i], &HexaloopdH[i]);
     strcat(Hexaloops, " ");
     free(buf);
     i++;
@@ -531,12 +528,12 @@ PRIVATE void  rd_Triloop37(void)
   i=0;
   /* erase old hexaloop entries */
   memset(&Triloops,   0, 241);
-  memset(&Triloop37,  0, sizeof(int)*40);
-  memset(&TriloopdH,  0, sizeof(int)*40);
+  memset(&Triloop37,  0, sizeof(double)*40);
+  memset(&TriloopdH,  0, sizeof(double)*40);
   do {
     buf = get_line(fp);
     if (buf==NULL) break;
-    r = sscanf(buf,"%5s %d %d", &Triloops[6*i], &Triloop37[i], &TriloopdH[i]);
+    r = sscanf(buf,"%5s %lf %lf", &Triloops[6*i], &Triloop37[i], &TriloopdH[i]);
     strcat(Triloops, " ");
     free(buf);
     i++;
@@ -875,29 +872,29 @@ PUBLIC void write_parameter_file(const char fname[]){
   fprintf(outfp,"\n# %s\n", settype(ML));
   fprintf(outfp,"/* F = cu*n_unpaired + cc + ci*loop_degree (+TermAU) */\n");
   fprintf(outfp,"/*\t    cu\t cu_dH\t    cc\t cc_dH\t    ci\t ci_dH  */\n");
-  fprintf(outfp,"\t%6d\t%6d\t%6d\t%6d\t%6d\t%6d\n", ML_BASE37, ML_BASEdH, ML_closing37, ML_closingdH, ML_intern37, ML_interndH);
+  fprintf(outfp,"\t%6.0f\t%6.0f\t%6.0f\t%6.0f\t%6.0f\t%6.0f\n", ML_BASE37, ML_BASEdH, ML_closing37, ML_closingdH, ML_intern37, ML_interndH);
 
   fprintf(outfp,"\n# %s\n", settype(NIN));
   fprintf(outfp,"/* Ninio = MIN(max, m*|n1-n2| */\n"
               "/*\t    m\t  m_dH     max  */\n"
-              "\t%6d\t%6d\t%6d\n", ninio37, niniodH, MAX_NINIO);
+              "\t%6.0f\t%6.0f\t%6.0f\n", ninio37, niniodH, MAX_NINIO);
 
   fprintf(outfp,"\n# %s\n", settype(MISC));
   fprintf(outfp,"/* all parameters are pairs of 'energy enthalpy' */\n");
   fprintf(outfp,"/*    DuplexInit     TerminalAU      LXC */\n");
-  fprintf(outfp,"   %6d %6d %6d  %6d %3.6f %6d\n", DuplexInit37, DuplexInitdH, TerminalAU37, TerminalAUdH, lxc37, 0);
+  fprintf(outfp,"   %6.0f %6.0f %6.0f  %6.0f %3.6f %6.0f\n", DuplexInit37, DuplexInitdH, TerminalAU37, TerminalAUdH, lxc37, 0.);
 
   fprintf(outfp,"\n# %s\n", settype(HEX));
   for (c=0; c< strlen(Hexaloops)/9; c++)
-    fprintf(outfp,"\t%.8s %6d %6d\n", Hexaloops+c*9, Hexaloop37[c], HexaloopdH[c]);
+    fprintf(outfp,"\t%.8s %6.0f %6.0f\n", Hexaloops+c*9, Hexaloop37[c], HexaloopdH[c]);
 
   fprintf(outfp,"\n# %s\n", settype(TL));
   for (c=0; c< strlen(Tetraloops)/7; c++)
-    fprintf(outfp,"\t%.6s %6d %6d\n", Tetraloops+c*7, Tetraloop37[c], TetraloopdH[c]);
+    fprintf(outfp,"\t%.6s %6.0f %6.0f\n", Tetraloops+c*7, Tetraloop37[c], TetraloopdH[c]);
 
   fprintf(outfp,"\n# %s\n", settype(TRI));
   for (c=0; c< strlen(Triloops)/6; c++)
-    fprintf(outfp,"\t%.5s %6d %6d\n", Triloops+c*6, Triloop37[c], TriloopdH[c]);
+    fprintf(outfp,"\t%.5s %6.0f %6.0f\n", Triloops+c*6, Triloop37[c], TriloopdH[c]);
 
   fprintf(outfp,"\n# %s\n", settype(QUIT));
   fclose(outfp);
@@ -923,7 +920,7 @@ PRIVATE void check_symmetry(void) {
       for (k=0; k<5; k++)
         for (l=0; l<5; l++)
           if (int11_37[i][j][k][l] != int11_37[j][i][l][k])
-            fprintf(stderr, "WARNING: int11 energies not symmetric (%d,%d,%d,%d) (%d vs. %d)\n", i, j, k, l, int11_37[i][j][k][l], int11_37[j][i][l][k]);
+            fprintf(stderr, "WARNING: int11 energies not symmetric (%d,%d,%d,%d) (%lf vs. %lf)\n", i, j, k, l, int11_37[i][j][k][l], int11_37[j][i][l][k]);
 
   for (i=0; i<=NBPAIRS; i++)
     for (j=0; j<=NBPAIRS; j++)
@@ -957,7 +954,7 @@ PRIVATE void check_symmetry(void) {
 }
 
 /* update nonstandard nucleotide/basepair involved contributions for int22 */
-PRIVATE void update_nst(int array[NBPAIRS+1][NBPAIRS+1][5][5][5][5]){
+PRIVATE void update_nst(double array[NBPAIRS+1][NBPAIRS+1][5][5][5][5]){
   int    i, j, k, l, m, n;
   int max, max2, max3, max4, max5, max6;
 

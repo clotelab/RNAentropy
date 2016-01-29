@@ -1,7 +1,7 @@
 #include <ctype.h>
 #include "utils.h"
 #include "fold_vars.h"
-
+#include <string.h>
 #define NBASES 8
 /*@notnull@*/
 

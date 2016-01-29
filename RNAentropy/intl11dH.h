@@ -1,4 +1,4 @@
-PUBLIC int int11_dH[NBPAIRS+1][NBPAIRS+1][5][5] =
+PUBLIC double int11_dH[NBPAIRS+1][NBPAIRS+1][5][5] =
 {{{{   INF,   INF,   INF,   INF,   INF}
   ,{   INF,   INF,   INF,   INF,   INF}
   ,{   INF,   INF,   INF,   INF,   INF}

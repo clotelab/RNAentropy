@@ -59,7 +59,7 @@ PUBLIC paramT *get_scaled_parameters( double temp,
     for(j = 3*VRNA_GQUAD_MIN_LINKER_LENGTH; j <= 3*VRNA_GQUAD_MAX_LINKER_LENGTH; j++){
       double GQuadAlpha_T = (double)GQuadAlphadH - (double)(GQuadAlphadH - GQuadAlpha37) * tempf;
       double GQuadBeta_T = (double)GQuadBetadH - (double)(GQuadBetadH - GQuadBeta37) * tempf;
-      params->gquad[i][j] = (int)GQuadAlpha_T*(i-1) + (int)(((double)GQuadBeta_T)*log(j - 2));
+      params->gquad[i][j] = GQuadAlpha_T*(i-1) + (((double)GQuadBeta_T)*log(j - 2));
     }
 
   for (i=0; i<31; i++)
@@ -70,8 +70,8 @@ PUBLIC paramT *get_scaled_parameters( double temp,
   }
   params->lxc = lxc37*tempf;
   for (; i<=MAXLOOP; i++) {
-    params->bulge[i] = params->bulge[30]+(int)(params->lxc*log((double)(i)/30.));
-    params->internal_loop[i] = params->internal_loop[30]+(int)(params->lxc*log((double)(i)/30.));
+    params->bulge[i] = params->bulge[30]+(params->lxc*log((double)(i)/30.));
+    params->internal_loop[i] = params->internal_loop[30]+(params->lxc*log((double)(i)/30.));
   }
 
   params->ninio[2] = niniodH - (niniodH - ninio37) * tempf;

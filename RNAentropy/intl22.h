@@ -1,4 +1,4 @@
-PUBLIC int int22_37[NBPAIRS+1][NBPAIRS+1][5][5][5][5] =
+PUBLIC double int22_37[NBPAIRS+1][NBPAIRS+1][5][5][5][5] =
 {{{{{{   INF,   INF,   INF,   INF,   INF}
     ,{   INF,   INF,   INF,   INF,   INF}
     ,{   INF,   INF,   INF,   INF,   INF}

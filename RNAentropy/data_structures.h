@@ -125,38 +125,38 @@ typedef struct{
  */
 typedef struct{
   int id;
-  int stack[NBPAIRS+1][NBPAIRS+1];
-  int hairpin[31];
-  int bulge[MAXLOOP+1];
-  int internal_loop[MAXLOOP+1];
-  int mismatchExt[NBPAIRS+1][5][5];
-  int mismatchI[NBPAIRS+1][5][5];
-  int mismatch1nI[NBPAIRS+1][5][5];
-  int mismatch23I[NBPAIRS+1][5][5];
-  int mismatchH[NBPAIRS+1][5][5];
-  int mismatchM[NBPAIRS+1][5][5];
-  int dangle5[NBPAIRS+1][5];
-  int dangle3[NBPAIRS+1][5];
-  int int11[NBPAIRS+1][NBPAIRS+1][5][5];
-  int int21[NBPAIRS+1][NBPAIRS+1][5][5][5];
-  int int22[NBPAIRS+1][NBPAIRS+1][5][5][5][5];
-  int ninio[5];
+  double stack[NBPAIRS+1][NBPAIRS+1];
+  double hairpin[31];
+  double bulge[MAXLOOP+1];
+  double internal_loop[MAXLOOP+1];
+  double mismatchExt[NBPAIRS+1][5][5];
+  double mismatchI[NBPAIRS+1][5][5];
+  double mismatch1nI[NBPAIRS+1][5][5];
+  double mismatch23I[NBPAIRS+1][5][5];
+  double mismatchH[NBPAIRS+1][5][5];
+  double mismatchM[NBPAIRS+1][5][5];
+  double dangle5[NBPAIRS+1][5];
+  double dangle3[NBPAIRS+1][5];
+  double int11[NBPAIRS+1][NBPAIRS+1][5][5];
+  double int21[NBPAIRS+1][NBPAIRS+1][5][5][5];
+  double int22[NBPAIRS+1][NBPAIRS+1][5][5][5][5];
+  double ninio[5];
   double  lxc;
-  int     MLbase;
-  int     MLintern[NBPAIRS+1];
-  int     MLclosing;
-  int     TerminalAU;
-  int     DuplexInit;
-  int     Tetraloop_E[200];
+  double     MLbase;
+  double     MLintern[NBPAIRS+1];
+  double     MLclosing;
+  double     TerminalAU;
+  double     DuplexInit;
+  double     Tetraloop_E[200];
   char    Tetraloops[1401];
-  int     Triloop_E[40];
+  double     Triloop_E[40];
   char    Triloops[241];
-  int     Hexaloop_E[40];
+  double     Hexaloop_E[40];
   char    Hexaloops[1801];
-  int     TripleC;
-  int     MultipleCA;
-  int     MultipleCB;
-  int     gquad [VRNA_GQUAD_MAX_STACK_SIZE + 1]
+  double     TripleC;
+  double     MultipleCA;
+  double     MultipleCB;
+  double     gquad [VRNA_GQUAD_MAX_STACK_SIZE + 1]
                 [3*VRNA_GQUAD_MAX_LINKER_LENGTH + 1];
 
   double  temperature;            /**<  \brief  Temperature used for loop contribution scaling */

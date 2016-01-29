@@ -62,32 +62,32 @@ PUBLIC double Tmeasure = 37+K0;  /* temperature of param measurements */
 
 /* PUBLIC double lxc37=107.9; */
 PUBLIC double lxc37=107.856;
-PUBLIC int ML_intern37=-90;
-PUBLIC int ML_interndH=-220;
-PUBLIC int ML_closing37=930;
-PUBLIC int ML_closingdH=3000;
-PUBLIC int ML_BASE37=0;
-PUBLIC int ML_BASEdH=0;
-PUBLIC int MAX_NINIO=300;
-PUBLIC int ninio37=60;
-PUBLIC int niniodH=320;
-PUBLIC int TerminalAU37=50;
-PUBLIC int TerminalAUdH=370;
-PUBLIC int DuplexInit37=410;
-PUBLIC int DuplexInitdH=360;
-PUBLIC int TripleC37=100;
-PUBLIC int TripleCdH=1860;
-PUBLIC int MultipleCA37=30;
-PUBLIC int MultipleCAdH=340;
-PUBLIC int MultipleCB37=160;
-PUBLIC int MultipleCBdH=760;
+PUBLIC double ML_intern37=-90;
+PUBLIC double ML_interndH=-220;
+PUBLIC double ML_closing37=930;
+PUBLIC double ML_closingdH=3000;
+PUBLIC double ML_BASE37=0;
+PUBLIC double ML_BASEdH=0;
+PUBLIC double MAX_NINIO=300;
+PUBLIC double ninio37=60;
+PUBLIC double niniodH=320;
+PUBLIC double TerminalAU37=50;
+PUBLIC double TerminalAUdH=370;
+PUBLIC double DuplexInit37=410;
+PUBLIC double DuplexInitdH=360;
+PUBLIC double TripleC37=100;
+PUBLIC double TripleCdH=1860;
+PUBLIC double MultipleCA37=30;
+PUBLIC double MultipleCAdH=340;
+PUBLIC double MultipleCB37=160;
+PUBLIC double MultipleCBdH=760;
 
-PUBLIC int GQuadAlpha37 = -1800;
-PUBLIC int GQuadAlphadH = -11934;
-PUBLIC int GQuadBeta37 = 1200;
-PUBLIC int GQuadBetadH = 0;
+PUBLIC double GQuadAlpha37 = -1800;
+PUBLIC double GQuadAlphadH = -11934;
+PUBLIC double GQuadBeta37 = 1200;
+PUBLIC double GQuadBetadH = 0;
 
-PUBLIC int stack37[NBPAIRS+1][NBPAIRS+1] =
+PUBLIC double stack37[NBPAIRS+1][NBPAIRS+1] =
 {{   INF,   INF,   INF,   INF,   INF,   INF,   INF,   INF}
 ,{   INF,  -240,  -330,  -210,  -140,  -210,  -210,  -140}
 ,{   INF,  -330,  -340,  -250,  -150,  -220,  -240,  -150}
@@ -96,7 +96,7 @@ PUBLIC int stack37[NBPAIRS+1][NBPAIRS+1] =
 ,{   INF,  -210,  -220,  -140,   -60,  -110,   -90,   -60}
 ,{   INF,  -210,  -240,  -130,  -100,   -90,  -130,   -90}
 ,{   INF,  -140,  -150,   130,    30,   -60,   -90,   130}};
-PUBLIC int stackdH[NBPAIRS+1][NBPAIRS+1] =
+PUBLIC double stackdH[NBPAIRS+1][NBPAIRS+1] =
 {{   INF,   INF,   INF,   INF,   INF,   INF,   INF,   INF}
 ,{   INF, -1060, -1340, -1210,  -560, -1050, -1040,  -560}
 ,{   INF, -1340, -1490, -1260,  -830, -1140, -1240,  -830}
@@ -106,14 +106,14 @@ PUBLIC int stackdH[NBPAIRS+1][NBPAIRS+1] =
 ,{   INF, -1040, -1240, -1280,  -700,  -680,  -770,  -680}
 ,{   INF,  -560,  -830,  -880,  -320,  -320,  -680,  -320}};
 
-PUBLIC int hairpin37[31] = {   INF,   INF,   INF,   540,   560,   570,   540,   600,   550,   640,   650,   660,   670,   680,   690,   690,   700,   710,   710,   720,   720,   730,   730,   740,   740,   750,   750,   750,   760,   760,   770};
-PUBLIC int hairpindH[31] = {   INF,   INF,   INF,   130,   480,   360,  -290,   130,  -290,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500};
-PUBLIC int bulge37[31] = {   INF,   380,   280,   320,   360,   400,   440,   460,   470,   480,   490,   500,   510,   520,   530,   540,   540,   550,   550,   560,   570,   570,   580,   580,   580,   590,   590,   600,   600,   600,   610};
-PUBLIC int bulgedH[31] = {   INF,  1060,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710};
-PUBLIC int internal_loop37[31] = {   INF,   INF,   100,   100,   110,   200,   200,   210,   230,   240,   250,   260,   270,   280,   290,   290,   300,   310,   310,   320,   330,   330,   340,   340,   350,   350,   350,   360,   360,   370,   370};
-PUBLIC int internal_loopdH[31] = {   INF,   INF,   -720,   -720,  -720,  -680,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130};
+PUBLIC double hairpin37[31] = {   INF,   INF,   INF,   540,   560,   570,   540,   600,   550,   640,   650,   660,   670,   680,   690,   690,   700,   710,   710,   720,   720,   730,   730,   740,   740,   750,   750,   750,   760,   760,   770};
+PUBLIC double hairpindH[31] = {   INF,   INF,   INF,   130,   480,   360,  -290,   130,  -290,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500,   500};
+PUBLIC double bulge37[31] = {   INF,   380,   280,   320,   360,   400,   440,   460,   470,   480,   490,   500,   510,   520,   530,   540,   540,   550,   550,   560,   570,   570,   580,   580,   580,   590,   590,   600,   600,   600,   610};
+PUBLIC double bulgedH[31] = {   INF,  1060,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710,   710};
+PUBLIC double internal_loop37[31] = {   INF,   INF,   100,   100,   110,   200,   200,   210,   230,   240,   250,   260,   270,   280,   290,   290,   300,   310,   310,   320,   330,   330,   340,   340,   350,   350,   350,   360,   360,   370,   370};
+PUBLIC double internal_loopdH[31] = {   INF,   INF,   -720,   -720,  -720,  -680,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130,  -130};
 
-PUBLIC int mismatchI37[NBPAIRS+1][5][5] =
+PUBLIC double mismatchI37[NBPAIRS+1][5][5] =
 {{{   INF,   INF,   INF,   INF,   INF}
  ,{   INF,   INF,   INF,   INF,   INF}
  ,{   INF,   INF,   INF,   INF,   INF}
@@ -162,7 +162,7 @@ PUBLIC int mismatchI37[NBPAIRS+1][5][5] =
  ,{    70,   -30,    70,   -30,    70}
  ,{    70,    70,    70,    70,    10}
  }};
-PUBLIC int mismatchIdH[NBPAIRS+1][5][5] =
+PUBLIC double mismatchIdH[NBPAIRS+1][5][5] =
 {{{   INF,   INF,   INF,   INF,   INF}
  ,{   INF,   INF,   INF,   INF,   INF}
  ,{   INF,   INF,   INF,   INF,   INF}
@@ -212,7 +212,7 @@ PUBLIC int mismatchIdH[NBPAIRS+1][5][5] =
  ,{   500,   500,   500,   500,   -80}
  }};
 
-PUBLIC int mismatchH37[NBPAIRS+1][5][5] =
+PUBLIC double mismatchH37[NBPAIRS+1][5][5] =
 {{{   INF,   INF,   INF,   INF,   INF}
  ,{   INF,   INF,   INF,   INF,   INF}
  ,{   INF,   INF,   INF,   INF,   INF}
@@ -261,7 +261,7 @@ PUBLIC int mismatchH37[NBPAIRS+1][5][5] =
  ,{   -30,   -90,   -30,  -110,   -30}
  ,{   -10,   -10,   -10,   -10,   -90}
  }};
-PUBLIC int mismatchHdH[NBPAIRS+1][5][5] =
+PUBLIC double mismatchHdH[NBPAIRS+1][5][5] =
 {{{   INF,   INF,   INF,   INF,   INF}
  ,{   INF,   INF,   INF,   INF,   INF}
  ,{   INF,   INF,   INF,   INF,   INF}
@@ -312,7 +312,7 @@ PUBLIC int mismatchHdH[NBPAIRS+1][5][5] =
  }};
 
 /* mismatch_multi */
-PUBLIC int mismatchM37[NBPAIRS+1][5][5] =
+PUBLIC double mismatchM37[NBPAIRS+1][5][5] =
 {{ /* NP.. */
   {   INF,   INF,   INF,   INF,   INF}
  ,{   INF,   INF,   INF,   INF,   INF}
@@ -371,7 +371,7 @@ PUBLIC int mismatchM37[NBPAIRS+1][5][5] =
  }};
 
 /* mismatch_multi_enthalpies */
-PUBLIC int mismatchMdH[NBPAIRS+1][5][5] =
+PUBLIC double mismatchMdH[NBPAIRS+1][5][5] =
 {{ /* NP.. */
   {   INF,   INF,   INF,   INF,   INF}
  ,{   INF,   INF,   INF,   INF,   INF}
@@ -429,7 +429,7 @@ PUBLIC int mismatchMdH[NBPAIRS+1][5][5] =
  ,{   200,   200,   -30,   200,   160}
  }};
 
-PUBLIC int mismatch1nI37[NBPAIRS+1][5][5] =
+PUBLIC double mismatch1nI37[NBPAIRS+1][5][5] =
 {{{   INF,   INF,   INF,   INF,   INF}
  ,{   INF,   INF,   INF,   INF,   INF}
  ,{   INF,   INF,   INF,   INF,   INF}
@@ -478,7 +478,7 @@ PUBLIC int mismatch1nI37[NBPAIRS+1][5][5] =
  ,{    70,    70,    70,    70,    70}
  ,{    70,    70,    70,    70,    70}
  }};
-PUBLIC int mismatch1nIdH[NBPAIRS+1][5][5] =
+PUBLIC double mismatch1nIdH[NBPAIRS+1][5][5] =
 {{{   INF,   INF,   INF,   INF,   INF}
  ,{   INF,   INF,   INF,   INF,   INF}
  ,{   INF,   INF,   INF,   INF,   INF}
@@ -528,7 +528,7 @@ PUBLIC int mismatch1nIdH[NBPAIRS+1][5][5] =
  ,{   500,   500,   500,   500,   500}
  }};
 
-PUBLIC int mismatch23I37[NBPAIRS+1][5][5] =
+PUBLIC double mismatch23I37[NBPAIRS+1][5][5] =
 {{{   INF,   INF,   INF,   INF,   INF}
  ,{   INF,   INF,   INF,   INF,   INF}
  ,{   INF,   INF,   INF,   INF,   INF}
@@ -577,7 +577,7 @@ PUBLIC int mismatch23I37[NBPAIRS+1][5][5] =
  ,{    70,   -40,    70,     0,    70}
  ,{    70,    70,    70,    70,    40}
  }};
-PUBLIC int mismatch23IdH[NBPAIRS+1][5][5] =
+PUBLIC double mismatch23IdH[NBPAIRS+1][5][5] =
 {{{   INF,   INF,   INF,   INF,   INF}
  ,{   INF,   INF,   INF,   INF,   INF}
  ,{   INF,   INF,   INF,   INF,   INF}
@@ -628,7 +628,7 @@ PUBLIC int mismatch23IdH[NBPAIRS+1][5][5] =
  }};
 
 /* mismatch_exterior */
-PUBLIC int mismatchExt37[NBPAIRS+1][5][5] =
+PUBLIC double mismatchExt37[NBPAIRS+1][5][5] =
 {{ /* NP.. */
   {   INF,   INF,   INF,   INF,   INF}
  ,{   INF,   INF,   INF,   INF,   INF}
@@ -687,7 +687,7 @@ PUBLIC int mismatchExt37[NBPAIRS+1][5][5] =
  }};
 
 /* mismatch_exterior_enthalpies */
-PUBLIC int mismatchExtdH[NBPAIRS+1][5][5] =
+PUBLIC double mismatchExtdH[NBPAIRS+1][5][5] =
 {{ /* NP.. */
   {   INF,   INF,   INF,   INF,   INF}
  ,{   INF,   INF,   INF,   INF,   INF}
@@ -746,7 +746,7 @@ PUBLIC int mismatchExtdH[NBPAIRS+1][5][5] =
  }};
 
 /* dangle5 */
-PUBLIC int dangle5_37[NBPAIRS+1][5] =
+PUBLIC double dangle5_37[NBPAIRS+1][5] =
 { /*           N      A      C      G      U */
 /* NP */ {   INF,   INF,   INF,   INF,   INF},
 /* CG */ {   -10,   -50,   -30,   -20,   -10},
@@ -759,7 +759,7 @@ PUBLIC int dangle5_37[NBPAIRS+1][5] =
 };
 
 /* dangle3 */
-PUBLIC int dangle3_37[NBPAIRS+1][5] =
+PUBLIC double dangle3_37[NBPAIRS+1][5] =
 { /*           N      A      C      G      U */
 /* NP */ {   INF,   INF,   INF,   INF,   INF},
 /* CG */ {   -40,  -110,   -40,  -130,   -60},
@@ -772,7 +772,7 @@ PUBLIC int dangle3_37[NBPAIRS+1][5] =
 };
 
 /* dangle5_enthalpies */
-PUBLIC int dangle5_dH[NBPAIRS+1][5] =
+PUBLIC double dangle5_dH[NBPAIRS+1][5] =
 { /*           N      A      C      G      U */
 /* NP */ {   INF,   INF,   INF,   INF,   INF},
 /* CG */ {   330,  -240,   330,    80,  -140},
@@ -785,7 +785,7 @@ PUBLIC int dangle5_dH[NBPAIRS+1][5] =
 };
 
 /* dangle3_enthalpies */
-PUBLIC int dangle3_dH[NBPAIRS+1][5] =
+PUBLIC double dangle3_dH[NBPAIRS+1][5] =
 { /*           N      A      C      G      U */
 /* NP */ {   INF,   INF,   INF,   INF,   INF},
 /* CG */ {  -280,  -740,  -280,  -640,  -360},
@@ -801,8 +801,8 @@ PUBLIC char Triloops[241] =
   "CAACG "
   "GUUAC "
 ;
-PUBLIC int Triloop37[40] = {   680,   690};
-PUBLIC int TriloopdH[40] = {  2370,  1080};
+PUBLIC double Triloop37[40] = {   680,   690};
+PUBLIC double TriloopdH[40] = {  2370,  1080};
 
 PUBLIC char Tetraloops[281] =
   "CAACGG "
@@ -822,8 +822,8 @@ PUBLIC char Tetraloops[281] =
   "CUUCGG "
   "CUUUGG "
 ;
-PUBLIC int Tetraloop37[40] = {   550,   330,   370,   340,   350,   360,   370,   250,   360,   280,   370,   270,   280,   350,   370,   370};
-PUBLIC int TetraloopdH[40] = {   690, -1030,  -330,  -890,  -660,  -750,  -350, -1390,  -760, -1070,  -660, -1290, -1070,  -620, -1530,  -680};
+PUBLIC double Tetraloop37[40] = {   550,   330,   370,   340,   350,   360,   370,   250,   360,   280,   370,   270,   280,   350,   370,   370};
+PUBLIC double TetraloopdH[40] = {   690, -1030,  -330,  -890,  -660,  -750,  -350, -1390,  -760, -1070,  -660, -1290, -1070,  -620, -1530,  -680};
 
 PUBLIC char Hexaloops[361] =
   "ACAGUACU "
@@ -831,8 +831,8 @@ PUBLIC char Hexaloops[361] =
   "ACAGUGCU "
   "ACAGUGUU "
 ;
-PUBLIC int Hexaloop37[40] = {   280,   360,   290,   180};
-PUBLIC int HexaloopdH[40] = { -1680, -1140, -1280, -1540};
+PUBLIC double Hexaloop37[40] = {   280,   360,   290,   180};
+PUBLIC double HexaloopdH[40] = { -1680, -1140, -1280, -1540};
 
 #include "intl11.h"
 #include "intl11dH.h"

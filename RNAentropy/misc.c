@@ -97,7 +97,7 @@ double ***Allocate3DMatrix(int a, int b, int c)
   for(i=0;i<a;i++)
     {for(j=0;j<b;j++)
         {
-        Matrix[i][j]=(double *) malloc((c)*sizeof(double));
+        Matrix[i][j]=(double *) calloc(c,sizeof(double));
         if(Matrix[i][j] == NULL)
         {printf("out of memory\n");
          exit(1);}
@@ -130,7 +130,7 @@ double **Allocate2DMatrix(int a, int b)
         {printf("out of memory\n");
          exit(1);}
   for (i=0; i<a; i++){
-    Matrix[i]=(double *) malloc((b)*sizeof(double));
+    Matrix[i]=(double *) calloc(b,sizeof(double));
     if(Matrix[i] == NULL)
         {printf("out of memory\n");
          exit(1);}

@@ -7,7 +7,7 @@
 #define SIZE_INIT 6
 
 PRIVATE int n, i_last=0, j_last=0, index=0;
-PRIVATE int **IL_table;
+PRIVATE double **IL_table;
 PRIVATE int pres_size=SIZE_INIT, size_inc=2;
 PRIVATE void chk_alloc();
 
@@ -15,9 +15,9 @@ void IL_initialize(int n_in){
   int i;
 
   n=n_in;
-  IL_table=(int**) malloc((n+1)*sizeof(int*));
+  IL_table=(double**) malloc((n+1)*sizeof(double*));
   for (i=1;i<=n;i++)
-    IL_table[i]=(int *) calloc(n+1, sizeof(int));
+    IL_table[i]=(double *) calloc(n+1, sizeof(double));
   IL = (struct IL_info *) malloc (pres_size*n*n*sizeof(struct IL_info));
   return;
 }
